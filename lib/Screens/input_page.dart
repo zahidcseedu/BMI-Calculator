@@ -302,7 +302,7 @@ class _InputPageState extends State<InputPage> {
             text: 'CALCULATE',
             onTap: () {
               // Convert feet and inches to centimeters
-
+              debugger();
               int heightInCm = (feet * 30.48 + inches * 2.54).round();
               Calculate calc = Calculate(height: heightInCm, weight: weight);
 
