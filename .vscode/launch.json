@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "BMI-Calculator (Debug)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "debugExternalPackageLibraries": true,
+            "debugExternalLibraries": true
+        }
+    ]
+}

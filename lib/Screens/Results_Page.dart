@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bmi_calculator_app/Components/BottomContainer_Button.dart';
 import 'package:bmi_calculator_app/constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -124,6 +126,7 @@ class _ResultPageState extends State<ResultPage> {
                     Center(
                       child: RawMaterialButton(
                         onPressed: () {
+                          debugger();
                           _saveResult();
                         },
                         constraints: BoxConstraints.tightFor(
