@@ -3,7 +3,7 @@ import '../constants.dart';
 
 class BottomContainer extends StatelessWidget {
   final String text;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
 
   BottomContainer({required this.text, required this.onTap});
   @override

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,11 @@ import '../calculator_brain.dart';
 
 // ignore: must_be_immutable
 class InputPage extends StatefulWidget {
+  final Gender? preSelectedGender;
+  final File? profileImage;
+
+  InputPage({this.preSelectedGender, this.profileImage});
+
   @override
   _InputPageState createState() => _InputPageState();
 }
@@ -27,11 +33,18 @@ enum Gender {
 class _InputPageState extends State<InputPage> {
   //by default male will be selected
 
-  late Gender selectedGender = Gender.male;
+  late Gender selectedGender;
   int feet = 5;
   int inches = 10;
   int weight = 70;
   int age = 30;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedGender = widget.preSelectedGender ?? Gender.male;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,44 +68,65 @@ class _InputPageState extends State<InputPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedGender = Gender.male;
-                      });
-                    },
-                    child: ReusableBg(
-                      colour: selectedGender == Gender.male
-                          ? kactiveCardColor
-                          : kinactiveCardColor,
-                      cardChild: IconContent(
-                          myicon: FontAwesomeIcons.user, text: 'MALE'),
+          if (widget.profileImage != null)
+            Expanded(
+              child: Center(
+                child: Container(
+                  width: 150.0,
+                  height: 150.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: FileImage(widget.profileImage!),
+                      fit: BoxFit.cover,
+                    ),
+                    border: Border.all(
+                      color: kactiveCardColor,
+                      width: 3.0,
                     ),
                   ),
                 ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedGender = Gender.female;
-                      });
-                    },
-                    child: ReusableBg(
-                      colour: selectedGender == Gender.female
-                          ? kactiveCardColor
-                          : kinactiveCardColor,
-                      cardChild: IconContent(
-                          myicon: FontAwesomeIcons.female, text: 'FEMALE'),
+              ),
+            )
+          else
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedGender = Gender.male;
+                        });
+                      },
+                      child: ReusableBg(
+                        colour: selectedGender == Gender.male
+                            ? kactiveCardColor
+                            : kinactiveCardColor,
+                        cardChild: IconContent(
+                            myicon: FontAwesomeIcons.user, text: 'MALE'),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedGender = Gender.female;
+                        });
+                      },
+                      child: ReusableBg(
+                        colour: selectedGender == Gender.female
+                            ? kactiveCardColor
+                            : kinactiveCardColor,
+                        cardChild: IconContent(
+                            myicon: FontAwesomeIcons.female, text: 'FEMALE'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
           Expanded(
             child: ReusableBg(
               colour: kactiveCardColor,
@@ -302,7 +336,6 @@ class _InputPageState extends State<InputPage> {
             text: 'CALCULATE',
             onTap: () {
               // Convert feet and inches to centimeters
-              debugger();
               int heightInCm = (feet * 30.48 + inches * 2.54).round();
               Calculate calc = Calculate(height: heightInCm, weight: weight);
 
@@ -318,6 +351,7 @@ class _InputPageState extends State<InputPage> {
                     weight: weight,
                     bmiBmi: calc.getBMI(),
                     normalWeightRange: calc.getNormalWeightRange(),
+                    profileImage: widget.profileImage,
                   ),
                 ),
               );

@@ -6,12 +6,22 @@ class BMIResult {
   final String status;
   final String normalWeightRange;
   final DateTime savedDate;
+  final int height;
+  final int weight;
+  final String advice;
+  final double bmiBmi;
+  final String profileImagePath;
 
   BMIResult({
     required this.bmi,
     required this.status,
     required this.normalWeightRange,
     required this.savedDate,
+    this.height = 0,
+    this.weight = 0,
+    this.advice = '',
+    this.bmiBmi = 0.0,
+    this.profileImagePath = '',
   });
 
   Map<String, dynamic> toMap() {
@@ -20,6 +30,11 @@ class BMIResult {
       'status': status,
       'normalWeightRange': normalWeightRange,
       'savedDate': savedDate.toIso8601String(),
+      'height': height,
+      'weight': weight,
+      'advice': advice,
+      'bmiBmi': bmiBmi,
+      'profileImagePath': profileImagePath,
     };
   }
 
@@ -30,6 +45,11 @@ class BMIResult {
       normalWeightRange: map['normalWeightRange'] ?? '',
       savedDate:
           DateTime.parse(map['savedDate'] ?? DateTime.now().toIso8601String()),
+      height: map['height'] ?? 0,
+      weight: map['weight'] ?? 0,
+      advice: map['advice'] ?? '',
+      bmiBmi: (map['bmiBmi'] ?? 0).toDouble(),
+      profileImagePath: map['profileImagePath'] ?? '',
     );
   }
 }
