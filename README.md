@@ -3,6 +3,17 @@
 ![BMI-Calculator-App](https://socialify.git.ci/Lakhankumawat/BMI-Calculator-App/image?font=KoHo&forks=1&issues=1&language=1&logo=https%3A%2F%2Fuser-images.githubusercontent.com%2F55774240%2F122743259-77b8c780-d2a4-11eb-9f0e-c50cada02cc7.gif&owner=1&pattern=Brick%20Wall&pulls=1&stargazers=1&theme=Dark)
 
 A new Flutter project.
+
+## 🛠 Built With
+
+| Tool | Version |
+|------|---------|
+| Flutter | 3.3.9 (stable) |
+| Dart | 2.18.5 |
+| DevTools | 2.15.0 |
+| Engine | 8f2221fbef |
+| Framework | b8f7f1f986 |
+
 # How It Will look 👇
 <table>
   <tr>
@@ -18,10 +29,6 @@ A new Flutter project.
 
 
 <img align="center" width="500" alt="logo" src="https://user-images.githubusercontent.com/55774240/122635653-da725d80-d102-11eb-9208-4c8d8b4a1ac6.png" />
-
-
-
-
 
 
 ## Getting Started
