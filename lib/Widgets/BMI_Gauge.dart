@@ -13,7 +13,7 @@ class BMIGaugeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: Size(300, 180),
+      size: Size(350, 180),
       painter: BMIGaugePainter(
         bmi: bmi,
         status: status,

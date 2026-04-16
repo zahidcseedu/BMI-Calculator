@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:bmi_calculator_app/Components/BottomContainer_Button.dart';
 import 'package:bmi_calculator_app/constants.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../Components/Reusable_Bg.dart';
 import '../Services/results_storage.dart';
 import '../Widgets/BMI_Gauge.dart';
+import 'input_page.dart';
 
 class ResultPage extends StatefulWidget {
   final String resultText;
@@ -17,6 +19,8 @@ class ResultPage extends StatefulWidget {
   final int weight;
   final double bmiBmi;
   final String normalWeightRange;
+  final bool isSavedResult;
+  final File? profileImage;
 
   ResultPage(
       {required this.textColor,
@@ -26,13 +30,17 @@ class ResultPage extends StatefulWidget {
       required this.height,
       required this.weight,
       required this.bmiBmi,
-      required this.normalWeightRange});
+      required this.normalWeightRange,
+      this.isSavedResult = false,
+      this.profileImage});
 
   @override
   State<ResultPage> createState() => _ResultPageState();
 }
 
 class _ResultPageState extends State<ResultPage> {
+  late bool _resultSaved = widget.isSavedResult;
+
   double _getBMIProgress() {
     // Scale BMI from 0 to 40 to 0 to 1
     // Underweight: 0-18.5, Normal: 18.5-25, Overweight: 25-40
@@ -125,21 +133,28 @@ class _ResultPageState extends State<ResultPage> {
                     SizedBox(height: 15.0),
                     Center(
                       child: RawMaterialButton(
-                        onPressed: () {
-                          debugger();
-                          _saveResult();
-                        },
+                        onPressed: _resultSaved
+                            ? null
+                            : () {
+                                _saveResult();
+                              },
                         constraints: BoxConstraints.tightFor(
                           width: 200.0,
                           height: 56.0,
                         ),
-                        fillColor: Color(0xFFEB1555),
+                        fillColor: _resultSaved
+                            ? Color(0xFF808080)
+                            : Color(0xFFEB1555),
                         elevation: 0.0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0)),
                         child: Text(
                           'SAVE RESULT',
-                          style: kBodyTextStyle,
+                          style: TextStyle(
+                            fontSize: 22,
+                            color:
+                                _resultSaved ? Color(0xFFBEBEBE) : Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -151,7 +166,15 @@ class _ResultPageState extends State<ResultPage> {
           BottomContainer(
               text: 'RE-CALCULATE',
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InputPage(
+                      profileImage: widget.profileImage,
+                    ),
+                  ),
+                  (route) => route.isFirst,
+                );
               }),
         ],
       ),
@@ -217,11 +240,19 @@ class _ResultPageState extends State<ResultPage> {
       status: widget.resultText,
       normalWeightRange: widget.normalWeightRange,
       savedDate: DateTime.now(),
+      height: widget.height,
+      weight: widget.weight,
+      advice: widget.advise,
+      bmiBmi: widget.bmiBmi,
+      profileImagePath: widget.profileImage?.path ?? '',
     );
 
     await ResultsStorage.saveResult(result);
 
     if (mounted) {
+      setState(() {
+        _resultSaved = true;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Result saved successfully!'),
