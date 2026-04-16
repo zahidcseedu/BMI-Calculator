@@ -30,8 +30,8 @@ class _InputPageState extends State<InputPage> {
   late Gender selectedGender = Gender.male;
   int feet = 5;
   int inches = 10;
-  int weight = 50;
-  int age = 20;
+  int weight = 70;
+  int age = 30;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -302,6 +302,7 @@ class _InputPageState extends State<InputPage> {
             text: 'CALCULATE',
             onTap: () {
               // Convert feet and inches to centimeters
+
               int heightInCm = (feet * 30.48 + inches * 2.54).round();
               Calculate calc = Calculate(height: heightInCm, weight: weight);
 
