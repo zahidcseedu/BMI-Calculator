@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../constants.dart';
 import 'input_page.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -203,8 +204,8 @@ class _LandingPageState extends State<LandingPage> {
                             ),
                             child: Column(
                               children: [
-                                Icon(
-                                  Icons.male,
+                                FaIcon(
+                                  FontAwesomeIcons.user,
                                   size: 50.0,
                                   color: Colors.white,
                                 ),
@@ -246,8 +247,8 @@ class _LandingPageState extends State<LandingPage> {
                             ),
                             child: Column(
                               children: [
-                                Icon(
-                                  Icons.female,
+                                FaIcon(
+                                  FontAwesomeIcons.female,
                                   size: 50.0,
                                   color: Colors.white,
                                 ),
