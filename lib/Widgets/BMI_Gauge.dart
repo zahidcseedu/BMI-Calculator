@@ -49,7 +49,7 @@ class BMIGaugePainter extends CustomPainter {
   void _drawGaugeBackground(Canvas canvas, Offset center, double radius) {
     final paint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 15;
+      ..strokeWidth = 30;
 
     // Underweight range (red) - 0 to 18.5
     paint.color = Colors.redAccent;
@@ -137,7 +137,7 @@ class BMIGaugePainter extends CustomPainter {
   void _drawNeedle(Canvas canvas, Offset center, double radius) {
     final angle = -pi + (bmi.clamp(0, 40) / 40) * pi;
 
-    // Draw needle
+    // Draw needle line
     final needlePaint = Paint()
       ..color = Colors.white
       ..strokeWidth = 3;
@@ -149,22 +149,39 @@ class BMIGaugePainter extends CustomPainter {
 
     canvas.drawLine(center, needleEnd, needlePaint);
 
-    // Draw arrow head
-    final arrowSize = 10.0;
-    final arrowAngle1 = angle + pi / 6;
-    final arrowAngle2 = angle - pi / 6;
+    // Draw filled triangle pointing AWAY from center (towards gauge)
+    final arrowSize = 14.0;
+
+    // Base of triangle is behind the needle tip
+    final baseCenter = Offset(
+      needleEnd.dx - arrowSize * cos(angle),
+      needleEnd.dy - arrowSize * sin(angle),
+    );
+
+    final arrowAngle1 = angle + pi / 2;
+    final arrowAngle2 = angle - pi / 2;
+    final baseWidth = 7.0;
 
     final arrowPoint1 = Offset(
-      needleEnd.dx + arrowSize * cos(arrowAngle1),
-      needleEnd.dy + arrowSize * sin(arrowAngle1),
+      baseCenter.dx + baseWidth * cos(arrowAngle1),
+      baseCenter.dy + baseWidth * sin(arrowAngle1),
     );
     final arrowPoint2 = Offset(
-      needleEnd.dx + arrowSize * cos(arrowAngle2),
-      needleEnd.dy + arrowSize * sin(arrowAngle2),
+      baseCenter.dx + baseWidth * cos(arrowAngle2),
+      baseCenter.dy + baseWidth * sin(arrowAngle2),
     );
 
-    canvas.drawLine(needleEnd, arrowPoint1, needlePaint);
-    canvas.drawLine(needleEnd, arrowPoint2, needlePaint);
+    final trianglePath = Path()
+      ..moveTo(needleEnd.dx, needleEnd.dy) // tip
+      ..lineTo(arrowPoint1.dx, arrowPoint1.dy)
+      ..lineTo(arrowPoint2.dx, arrowPoint2.dy)
+      ..close();
+
+    final trianglePaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    canvas.drawPath(trianglePath, trianglePaint);
   }
 
   void _drawCenterCircle(Canvas canvas, Offset center) {

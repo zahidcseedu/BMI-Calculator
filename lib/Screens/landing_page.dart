@@ -361,24 +361,48 @@ class _LandingPageState extends State<LandingPage> {
               ),
 
               // Continue Button
-              GestureDetector(
-                onTap: _proceedToCalculator,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFEB1555),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'CONTINUE',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+              MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: StatefulBuilder(
+                  builder: (context, setState) {
+                    bool isHovered = false;
+                    return MouseRegion(
+                      onEnter: (_) => setState(() => isHovered = true),
+                      onExit: (_) => setState(() => isHovered = false),
+                      child: GestureDetector(
+                        onTap: _proceedToCalculator,
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 200),
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          decoration: BoxDecoration(
+                            color: isHovered
+                                ? Color(0xFF2196F3)
+                                : Color(0xFF1B5E7E),
+                            borderRadius: BorderRadius.circular(10.0),
+                            boxShadow: isHovered
+                                ? [
+                                    BoxShadow(
+                                      color: Color(0xFF2196F3).withOpacity(0.5),
+                                      blurRadius: 10,
+                                      spreadRadius: 2,
+                                    )
+                                  ]
+                                : [],
+                          ),
+                          child: Center(
+                            child: Text(
+                              'CONTINUE',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
               ),
             ],
