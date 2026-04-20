@@ -332,30 +332,69 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          BottomContainer(
-            text: 'CALCULATE',
-            onTap: () {
-              // Convert feet and inches to centimeters
-              int heightInCm = (feet * 30.48 + inches * 2.54).round();
-              Calculate calc = Calculate(height: heightInCm, weight: weight);
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ResultPage(
-                    bmi: calc.result(),
-                    resultText: calc.getText(),
-                    advise: calc.getAdvise(),
-                    textColor: calc.getTextColor(),
-                    height: heightInCm,
-                    weight: weight,
-                    bmiBmi: calc.getBMI(),
-                    normalWeightRange: calc.getNormalWeightRange(),
-                    profileImage: widget.profileImage,
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                bool isHovered = false;
+                return MouseRegion(
+                  onEnter: (_) => setState(() => isHovered = true),
+                  onExit: (_) => setState(() => isHovered = false),
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () {
+                      int heightInCm = (feet * 30.48 + inches * 2.54).round();
+                      Calculate calc =
+                          Calculate(height: heightInCm, weight: weight);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResultPage(
+                            bmi: calc.result(),
+                            resultText: calc.getText(),
+                            advise: calc.getAdvise(),
+                            textColor: calc.getTextColor(),
+                            height: heightInCm,
+                            weight: weight,
+                            bmiBmi: calc.getBMI(),
+                            normalWeightRange: calc.getNormalWeightRange(),
+                            profileImage: widget.profileImage,
+                          ),
+                        ),
+                      );
+                    },
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      decoration: BoxDecoration(
+                        color:
+                            isHovered ? Color(0xFF2196F3) : Color(0xFF1B5E7E),
+                        borderRadius: BorderRadius.circular(10.0),
+                        boxShadow: isHovered
+                            ? [
+                                BoxShadow(
+                                  color: Color(0xFF2196F3).withOpacity(0.5),
+                                  blurRadius: 10,
+                                  spreadRadius: 2,
+                                )
+                              ]
+                            : [],
+                      ),
+                      child: Center(
+                        child: Text(
+                          'CALCULATE',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ],
       ),

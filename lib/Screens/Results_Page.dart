@@ -132,30 +132,52 @@ class _ResultPageState extends State<ResultPage> {
                     ),
                     SizedBox(height: 15.0),
                     Center(
-                      child: RawMaterialButton(
-                        onPressed: _resultSaved
-                            ? null
-                            : () {
-                                _saveResult();
-                              },
-                        constraints: BoxConstraints.tightFor(
-                          width: 200.0,
-                          height: 56.0,
-                        ),
-                        fillColor: _resultSaved
-                            ? Color(0xFF808080)
-                            : Color(0xFFEB1555),
-                        elevation: 0.0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: Text(
-                          'SAVE RESULT',
-                          style: TextStyle(
-                            fontSize: 22,
-                            color:
-                                _resultSaved ? Color(0xFFBEBEBE) : Colors.white,
-                          ),
-                        ),
+                      child: StatefulBuilder(
+                        builder: (context, setState) {
+                          bool isHovered = false;
+                          return MouseRegion(
+                            onEnter: (_) => setState(() => isHovered = true),
+                            onExit: (_) => setState(() => isHovered = false),
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: _resultSaved ? null : () => _saveResult(),
+                              child: AnimatedContainer(
+                                duration: Duration(milliseconds: 200),
+                                width: 200.0,
+                                height: 56.0,
+                                decoration: BoxDecoration(
+                                  color: _resultSaved
+                                      ? Color(0xFF808080)
+                                      : isHovered
+                                          ? Color(0xFF2196F3)
+                                          : Color(0xFF1B5E7E),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  boxShadow: isHovered && !_resultSaved
+                                      ? [
+                                          BoxShadow(
+                                            color: Color(0xFF2196F3)
+                                                .withOpacity(0.5),
+                                            blurRadius: 10,
+                                            spreadRadius: 2,
+                                          )
+                                        ]
+                                      : [],
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'SAVE RESULT',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      color: _resultSaved
+                                          ? Color(0xFFBEBEBE)
+                                          : Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],
@@ -163,19 +185,60 @@ class _ResultPageState extends State<ResultPage> {
               ),
             ),
           ),
-          BottomContainer(
-              text: 'RE-CALCULATE',
-              onTap: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => InputPage(
-                      profileImage: widget.profileImage,
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                bool isHovered = false;
+                return MouseRegion(
+                  onEnter: (_) => setState(() => isHovered = true),
+                  onExit: (_) => setState(() => isHovered = false),
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => InputPage(
+                            profileImage: widget.profileImage,
+                          ),
+                        ),
+                        (route) => route.isFirst,
+                      );
+                    },
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      decoration: BoxDecoration(
+                        color:
+                            isHovered ? Color(0xFF2196F3) : Color(0xFF1B5E7E),
+                        borderRadius: BorderRadius.circular(10.0),
+                        boxShadow: isHovered
+                            ? [
+                                BoxShadow(
+                                  color: Color(0xFF2196F3).withOpacity(0.5),
+                                  blurRadius: 10,
+                                  spreadRadius: 2,
+                                )
+                              ]
+                            : [],
+                      ),
+                      child: Center(
+                        child: Text(
+                          'RE-CALCULATE',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  (route) => route.isFirst,
                 );
-              }),
+              },
+            ),
+          ),
         ],
       ),
     );
