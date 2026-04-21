@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
-
+import 'landing_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -50,6 +50,18 @@ class _InputPageState extends State<InputPage> {
     return Scaffold(
       backgroundColor: Color(0xFF0A2F51),
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.home, color: Colors.white),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LandingPage(),
+              ),
+              (route) => false,
+            );
+          },
+        ),
         title: Center(
           child: Text('BMI CALCULATOR'),
         ),
